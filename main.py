@@ -9,6 +9,7 @@ import tkinter as tk
 import window as win
 import keyCalls as keys
 import player as ply
+import world as wr
 
 # Loop Variables
 THROTTLE = 10000
@@ -27,8 +28,10 @@ def nanoTime():
     return ((1000 * t.perf_counter()) / 10000) * 100
 
 # Initialize any of our classes that we need
-w = win.Window(640, 480, "PyRPG Example")
+w = win.Window(640, 640, "PyRPG Example")
 kc = keys.KeyCalls()
+mp = wr.world(20, 20, 0, 0, 32)
+mp.testPrint()
 
 # These methods are here to actually control the game. This is where the actual game logic resides
 def update(delta):
@@ -49,6 +52,7 @@ def createSpr(entity, canvas):
 # Populate the objects and sprites
 createObj(ply.Player(0,0,32,32,"Player", 32, 'red'))
 createSpr(objects[f'{"Player"}'], w.can)
+objects["Player"].placeInMap(mp)
 
 # This area is used to bind our keys
 w.root.bind("<Escape>", lambda e: kc.quitOut(e, w.root))

@@ -8,7 +8,7 @@ PyRPG is a small project managed by myself with one simple goal, create a simple
 
 - [X] Create base window
 - [X] Create base player class
-- [] Create base world type
+- [X] Create base world type
 - [X] Implement movement
 - [] Create base Enemy class
 - [] Implement base battle system

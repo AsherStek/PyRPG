@@ -5,8 +5,14 @@ import entity
 class Player(entity.Entity):
     def __init__(self, x, y, width, height, name, step, color):
         super().__init__(x, y, width, height, name)
+        self.activeMap = None
         self._step = step
         self._color = color
+    
+    def placeInMap(self, newMap):
+        self.activeMap = newMap
+        self.x1 = self.activeMap.x
+        self.y1 = self.activeMap.y
 
     # Getters
     @property
@@ -38,14 +44,26 @@ class Player(entity.Entity):
 
     # The movement functions
     def up(self):
-        self.y1 -= self.step
-        self.y2 -= self.step
+        if (self.y1 - self.activeMap.size < 0):
+            self.y1 = self.activeMap.y
+        else:
+            self.y1 -= self.activeMap.size
+            self.y2 -= self.activeMap.size
     def down(self):
-        self.y1 += self.step
-        self.y2 += self.step
+        if (self.y2 + self.activeMap.size > self.activeMap.ym):
+            self.y2 = self.activeMap.ym
+        else:
+            self.y1 += self.activeMap.size
+            self.y2 += self.activeMap.size
     def left(self):
-        self.x1 -= self.step
-        self.x2 -= self.step
+        if (self.x1 - self.activeMap.size < 0):
+            self.x1 = self.activeMap.x
+        else:
+            self.x1 -= self.activeMap.size
+            self.x2 -= self.activeMap.size
     def right(self):
-        self.x1 += self.step
-        self.x2 += self.step
+        if (self.x2 + self.activeMap.size > self.activeMap.xm):
+            self.x2 = self.activeMap.xm
+        else:
+            self.x1 += self.activeMap.size
+            self.x2 += self.activeMap.size
