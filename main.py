@@ -10,6 +10,7 @@ import window as win
 import keyCalls as keys
 import player as ply
 import world as wr
+import battle as bat
 
 # Loop Variables
 THROTTLE = 10000
@@ -23,6 +24,10 @@ running = True
 objects = {}
 sprites = {}
 
+# Other variables for classes
+pStats = [0,0,0,0,0,0]
+eStats = [0,0,0,0,0,0]
+
 # Loop Nanotime method as python does not have a built in nanotime
 def nanoTime():
     return ((1000 * t.perf_counter()) / 10000) * 100
@@ -32,6 +37,7 @@ w = win.Window(640, 640, "PyRPG Example")
 kc = keys.KeyCalls()
 mp = wr.world(20, 20, 0, 0, 32)
 mp.testPrint()
+b = bat.Battle(w.can)
 
 # These methods are here to actually control the game. This is where the actual game logic resides
 def update(delta):
@@ -50,7 +56,7 @@ def createSpr(entity, canvas):
     sprites[f'{entity.name}'] = canvas.create_rectangle(entity.x1, entity.y1, entity.x2, entity.y2, fill=entity.color)
 
 # Populate the objects and sprites
-createObj(ply.Player(0,0,32,32,"Player", 32, 'red'))
+createObj(ply.Player(0,0,32,32,"Player", 32, 'red', pStats))
 createSpr(objects[f'{"Player"}'], w.can)
 objects["Player"].placeInMap(mp)
 
