@@ -5,3 +5,6 @@ class KeyCalls(object):
     def quitOut(self, event, window):
         window.destroy()
         print("Program was manually closed")
+
+    def playerMove(self, event, player):
+        player.move(event.char)

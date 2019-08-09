@@ -8,6 +8,7 @@ import tkinter as tk
 # Our class imports
 import window as win
 import keyCalls as keys
+import player as ply
 
 # Loop Variables
 THROTTLE = 10000
@@ -17,6 +18,10 @@ lastFpsTime = 0
 fps = 0
 running = True
 
+# Dictionaries for storing ingame objects for easier access and modification
+objects = {}
+sprites = {}
+
 # Loop Nanotime method as python does not have a built in nanotime
 def nanoTime():
     return ((1000 * t.perf_counter()) / 10000) * 100
@@ -25,19 +30,32 @@ def nanoTime():
 w = win.Window(640, 480, "PyRPG Example")
 kc = keys.KeyCalls()
 
-# This area is used to bind our keys
-w.root.bind("<Escape>", lambda e: kc.quitOut(e, w.root))
-
 # These methods are here to actually control the game. This is where the actual game logic resides
-def update():
+def update(delta):
 
     # Anything called here will update every loop. Used for game logic
     pass
 
-def render():
+def render(delta, canvas):
+    for key in objects.values():
+        canvas.coords(sprites[key.name], key.x1, key.y1, key.x2, key.y2)
 
-    # This will update anything that has been drawn to the canvas in the last loop
-    w.updateCanvas()
+def createObj(entity):
+    objects[f'{entity.name}'] = entity
+
+def createSpr(entity, canvas):
+    sprites[f'{entity.name}'] = canvas.create_rectangle(entity.x1, entity.y1, entity.x2, entity.y2, fill=entity.color)
+
+# Populate the objects and sprites
+createObj(ply.Player(0,0,32,32,"Player", 32, 'red'))
+createSpr(objects[f'{"Player"}'], w.can)
+
+# This area is used to bind our keys
+w.root.bind("<Escape>", lambda e: kc.quitOut(e, w.root))
+w.root.bind("<KeyPress-w>", lambda e, p=objects["Player"]: kc.playerMove(e, p))
+w.root.bind("<KeyPress-s>", lambda e, p=objects["Player"]: kc.playerMove(e, p))
+w.root.bind("<KeyPress-a>", lambda e, p=objects["Player"]: kc.playerMove(e, p))
+w.root.bind("<KeyPress-d>", lambda e, p=objects["Player"]: kc.playerMove(e, p))
 
 while running:
 
@@ -61,8 +79,8 @@ while running:
             fps = 0
 
         # Update and Render calls
-        update()
-        render()
+        update(delta)
+        render(delta, w.can)
         
         # Determin how long to have the program sleep to maintain the proper execution speed
         sleepFor = int((lastLoopTime - nanoTime() + OPTIMAL_TIME) / MILLION)
