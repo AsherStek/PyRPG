@@ -4,6 +4,7 @@
 # Python imports
 import time as t
 import tkinter as tk
+import random as rng
 
 # Our class imports
 import window as win
@@ -25,25 +26,32 @@ objects = {}
 sprites = {}
 
 # Other variables for classes
+width = 640
+height = 640
 pStats = [0,0,0,0,0,0]
 eStats = [0,0,0,0,0,0]
+in_battle = False
 
 # Loop Nanotime method as python does not have a built in nanotime
 def nanoTime():
     return ((1000 * t.perf_counter()) / 10000) * 100
 
 # Initialize any of our classes that we need
-w = win.Window(640, 640, "PyRPG Example")
+rand = rng.Random()
+w = win.Window(width, height, "PyRPG Example")
 kc = keys.KeyCalls()
 mp = wr.world(20, 20, 0, 0, 32)
 mp.testPrint()
-b = bat.Battle(w.can)
 
 # These methods are here to actually control the game. This is where the actual game logic resides
 def update(delta):
 
     # Anything called here will update every loop. Used for game logic
-    pass
+    if (rand.randint(0, 100) > 85 and not in_battle):
+        print("Battle started")
+        b = bat.Battle(w.can, width, height)
+        in_battle != in_battle
+        print(in_battle)
 
 def render(delta, canvas):
     for key in objects.values():
@@ -62,6 +70,7 @@ objects["Player"].placeInMap(mp)
 
 # This area is used to bind our keys
 w.root.bind("<Escape>", lambda e: kc.quitOut(e, w.root))
+w.root.bind("<KeyPress-l>", lambda e, bt=bat.Battle: kc.debugEndBattle(e, bt))
 w.root.bind("<KeyPress-w>", lambda e, p=objects["Player"]: kc.playerMove(e, p))
 w.root.bind("<KeyPress-s>", lambda e, p=objects["Player"]: kc.playerMove(e, p))
 w.root.bind("<KeyPress-a>", lambda e, p=objects["Player"]: kc.playerMove(e, p))

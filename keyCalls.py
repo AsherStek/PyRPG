@@ -6,5 +6,9 @@ class KeyCalls(object):
         window.destroy()
         print("Program was manually closed")
 
+    def debugEndBattle(self, event, battle):
+        battle.endBattle()
+        print("Manually ended battle")
+
     def playerMove(self, event, player):
         player.move(event.char)

@@ -4,12 +4,15 @@ import random as rng
 import tkinter as tk
 
 class Battle(tk.Frame):
-    def __init__(self, master):
-        super().__init__(master)
+    def __init__(self, master, width, height):
+        super().__init__(master=master, width=width, height=height)
         self.grid(row=0, column=0)
 
-        self.area = tk.Canvas(self, width=master.winfo_width() - 64, height=master.winfo_height() - 64, bg='grey10')
+        print(f"Width: {width} Height: {height}")
+
+        self.area = tk.Canvas(self, width=width, height=height, bg='black')
         self.area.create_window(32, 32, anchor='center')
+        self.area.grid(row=0, column=0)
 
         self.area.update()
 
